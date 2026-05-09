@@ -1,26 +1,15 @@
 const express = require("express");
-const { register, login } = require("../controllers/authController");
+const authctrl = require("../controllers/authController");
 const { protect, allowRoles } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
+router.post("/register", authctrl.register);
+router.post("/login", authctrl.login);
 
-router.get("/profile", protect, (req, res) => {
-  res.json({
-    message: "Profile accessed",
-    user: req.user,
-  });
-});
-
-router.get(
-  "/admin-only",
+router.put( "/change-password",
   protect,
-  allowRoles("admin"),
-  (req, res) => {
-    res.json({ message: "Admin only route accessed" });
-  }
+  authctrl.changePassword
 );
 
 module.exports = router;

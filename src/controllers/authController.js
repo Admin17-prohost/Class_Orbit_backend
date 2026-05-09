@@ -115,3 +115,50 @@ exports.login = async (req, res) => {
     });
   }
 };
+exports.changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    const userId = req.user.id;
+    const role = req.user.role;
+
+    let account;
+
+    if (role === "hod") {
+      account = await HOD.findByPk(userId);
+    } else if (role === "staff") {
+      account = await Staff.findByPk(userId);
+    } else {
+      account = await User.findByPk(userId);
+    }
+
+    if (!account) {
+      return res.status(404).json({
+        message: "Account not found",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(
+      currentPassword,
+      account.password
+    );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Current password incorrect",
+      });
+    }
+
+    account.password = newPassword;
+    await account.save();
+
+    res.json({
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Password change failed",
+      error: error.message,
+    });
+  }
+};

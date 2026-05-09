@@ -2,6 +2,7 @@ const HOD = require("../models/HOD");
 
 exports.createHOD = async (req, res) => {
   try {
+    const DEFAULT_HOD_PASSWORD = "HOD@123";
     const { name, email, password, phone, department, status } = req.body;
 
     const existingEmail = await HOD.findOne({ where: { email } });
@@ -15,11 +16,12 @@ exports.createHOD = async (req, res) => {
         message: "This department already has an HOD",
       });
     }
+   
 
     const hod = await HOD.create({
       name,
       email,
-      password,
+      password: DEFAULT_HOD_PASSWORD,
       phone,
       department,
       status,
