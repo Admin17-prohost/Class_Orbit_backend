@@ -1,11 +1,11 @@
-const department = require("../models/department_model");
 const Department = require("../models/department_model");
+
 
 //Create Department
 
 const createDept = async (req, res) => {
     try {
-        const { name,code } = req.body;
+        const { name, code } = req.body;
 
         //validation
 

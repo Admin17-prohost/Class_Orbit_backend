@@ -8,11 +8,13 @@ app.use(express.json());
 const sequelize = require("./config/db");
 
 // Routes
-  const adminRoutes = require("./routes/admin.routes");
+  const authRoutes = require("./routes/auth.routes");
   const deptRoutes = require("./routes/department.routes");
+  const subjectRoutes = require("./routes/subject.routes");
 // Api
-  app.use("/api/admin", adminRoutes);
+  app.use("/api/auth", authRoutes);
   app.use("/api/department", deptRoutes);
+  app.use("/api/subject", subjectRoutes);
 
 // 🔥 Sync & authentication to Database
 
@@ -22,7 +24,7 @@ sequelize.authenticate()
 
 require("./models");
 
-  sequelize.sync()
+  sequelize.sync() 
     .then(() => {
         console.log("✅ Database synced");
 

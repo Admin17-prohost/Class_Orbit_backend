@@ -32,7 +32,7 @@ const hod = sequelize.define("hod",{
     role: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "hod"
+        defaultValue: "HOD"
     }
 });
 

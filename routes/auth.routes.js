@@ -4,9 +4,9 @@ const router = express.Router();
 const verifytoken = require("../middleware/auth.middleware");
 
 
-const {adminLogin} = require("../controllers/admin.controller");
+const {Login} = require("../controllers/auth.controller");
 
-router.post("/login", adminLogin);
+router.post("/login", Login);
 
 router.get("/test", verifytoken, (req, res) => {
     res.json({

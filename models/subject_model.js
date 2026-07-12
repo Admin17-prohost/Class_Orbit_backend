@@ -1,13 +1,13 @@
-const { DataTypes } = require("Sequelize");
-const sequelize = require("../config/db");
+const { DataTypes } = require("sequelize");
+const Sequelize = require("../config/db");
 
-const subject = sequelize.define("subject",{
+const subject = Sequelize.define("subject",{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    name: {
+    subject_name: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -18,7 +18,7 @@ const subject = sequelize.define("subject",{
     },
     semester: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     departmentID: {
         type: DataTypes.INTEGER,
