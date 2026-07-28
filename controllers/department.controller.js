@@ -1,5 +1,5 @@
 const Department = require("../models/department_model");
-
+const { Op } = require("sequelize");
 
 //Create Department
 
@@ -9,32 +9,38 @@ const createDept = async (req, res) => {
 
         //validation
 
-        if(!name){
+        if(!name?.trim()|| !code?.trim()){
             return res.status(400).json({
-                Success:false,
-                message: "Department name is required....🤨"
+                success:false,
+                message: "Department name and code are required."
             });
         }
 
         //Check Existing Department
 
         const existingDepartment = await Department.findOne({
-            where: { name, code }
+            where: {
+                [Op.or]: [
+                    { name: name.trim() },
+                    { code: code.trim().toUpperCase() }
+                ]
+            }
         });
 
         if (existingDepartment) {
             return res.status(409).json({
-                Success: false,
+                success: false,
                 message: "Department already exists...😒"
             });
         }
         //Create 
         const department = await Department.create({
-            name, code
+            name: name.trim(),
+            code: code.trim().toUpperCase()
         });
 
         return res.status(201).json({
-            Success: true,
+            success: true,
             message: "Department create successfully",
             data: department
         });
@@ -42,7 +48,7 @@ const createDept = async (req, res) => {
         console.error(error);
 
         return res.status(500).json({
-            Success: false,
+            success: false,
             message: "Server Error in department...😔"
         });
     }
@@ -55,15 +61,15 @@ const getAllDept = async (req, res) => {
         const department = await Department.findAll();
 
         return res.status(200).json({
-            Success: true,
-            Count: department.length,
+            success: true,
+            count: department.length,
             data: department
         });
     } catch (error) {
         console.error(error);
 
         return res.status(500).json({
-            Success: false,
+            success: false,
             message: "Server Error in department...😔"
         });
     }
@@ -79,13 +85,13 @@ const getDept = async (req, res) => {
 
     if(!department){
         return res.status(404).json({
-            Success: false,
+            success: false,
             message: "Department Not found....😔!"
         });
     }
     return res.status(200).json({
-        Success: true,
-        message: "Department Successfully Fetch....☺️",
+        success: true,
+        message: "Department successfully Fetch....☺️",
         department
     });
 
@@ -93,7 +99,7 @@ const getDept = async (req, res) => {
         console.error(error);
         
         return res.status(500).json({
-            Success: false,
+            success: false,
             message: "Server Error in department...😔!"
         });
     }
@@ -105,30 +111,64 @@ const getDept = async (req, res) => {
         const {id} = req.params;
         const {name, code} = req.body;
 
+        //Validation
+        if(!name?.trim() || !code?.trim() ){
+            return res.status(400).json({
+                success: false,
+                message: "Department name and code are required."
+            });
+        }
+
+        //find department
         const department = await Department.findByPk(id);
 
         if(!department) {
             return res.status(404).json({
-                Success: false,
+                success: false,
                 message: "Department Not Found"
             });
         }
 
-        department.name = name;
-        department.code = code;
+        const formattedName = name.trim();
+        const formattedCode = code.trim().toUpperCase();
 
-        await department.save();
+        //Check Duplicate
+        const existingDepartment = await Department.findOne({
+            where: {
+                [Op.or]:[
+                    { name: formattedName },
+                    { code: formattedCode }
+                ],
+                id: {
+                    [Op.ne]: id
+                }
+            }
+        });
+
+        if(existingDepartment){
+            return res.status(409).json({
+                success: false,
+                message: "Department name or code already exists."
+            });
+        }
+
+        //Update
+        await department.update({
+            name: formattedName,
+            code: formattedCode
+        });
+
         return res.status(200).json({
-            Success: true,
-            message: "Department Updated Successfully....☺️",
+            success: true,
+            message: "Department Updated successfully....☺️",
             data: department
         });
         
     } catch (error){
-        console.error(error);
+        console.error("Department Update Error: ",error);
 
         return res.status(500).json({
-            Success: false,
+            success: false,
             message: "Server Error in department...😔"
         });
     }
@@ -143,7 +183,7 @@ const getDept = async (req, res) => {
 
         if(!department) {
             return res.status(404).json({
-                Success: false,
+                success: false,
                 message: "Department Not found...😔"
             });
         }
@@ -151,15 +191,15 @@ const getDept = async (req, res) => {
         await department.destroy();
 
         return res.status(200).json({
-            Success: true,
-            message: "Department Deleted Successfully...☺️"
+            success: true,
+            message: "Department Deleted successfully...☺️"
         });
 
-    } catch {
-        console.error(error);
+    } catch (error) {
+        console.error("Department Delete Error: ", error);
 
         return res.status(500).json({
-            Success: false,
+            success: false,
             message: "Server Error in department...😔"
         });
     }

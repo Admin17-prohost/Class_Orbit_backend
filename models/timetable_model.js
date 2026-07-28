@@ -1,7 +1,7 @@
-const { DataTypes } = require("Sequelize");
-const sequelize = require("../config/db");
+const { DataTypes } = require("sequelize");
+const Sequelize = require("../config/db");
 
-const timetable = sequelize.define("timetable",{
+const timetable = Sequelize.define("timetable",{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -23,7 +23,15 @@ const timetable = sequelize.define("timetable",{
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    
+    staffID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: "staffs",
+            key: "id"
+        }
+    }
+    ,
     subjectID: {
         type: DataTypes.INTEGER,
         allowNull: false,

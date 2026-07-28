@@ -11,12 +11,12 @@ const verifyToken = (req, res, next) => {
             });
         }
 
-        const token = authHeader.split(" ")[1];
+        const [scheme, token] = authHeader.split(" ");
 
-        if(!token) {
+        if (scheme !== "Bearer" || !token) {
             return res.status(401).json({
-                Success: false,
-                message: "Access Denied, Token is Missing..😔"
+                success: false,
+                message: "Invalid Authorization Format..😔"
             });
         }
 
@@ -26,7 +26,7 @@ const verifyToken = (req, res, next) => {
         next();
     } catch (error) {
         return res.status(401).json({
-            Success: false,
+            success: false,
             message: "Invalid Token..😔"
         });
     }

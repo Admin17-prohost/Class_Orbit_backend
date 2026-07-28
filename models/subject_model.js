@@ -34,7 +34,9 @@ const subject = Sequelize.define("subject",{
         references: {
             model: "staffs",
             key: "id"
-        }
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL"
     }
 });
 

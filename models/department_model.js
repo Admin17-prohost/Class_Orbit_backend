@@ -1,7 +1,7 @@
-const { DataTypes } = require("Sequelize");
-const sequelize = require("../config/db");
+const { DataTypes } = require("sequelize");
+const Sequelize = require("../config/db");
 
-const department = sequelize.define("department",{
+const department = Sequelize.define("department",{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -16,16 +16,7 @@ const department = sequelize.define("department",{
         allowNull: false,
         unique: true
     },
-    hodID: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: "hods",
-            key: "id"
-        }
-    }
-
-
+    
 });
 
 module.exports = department;

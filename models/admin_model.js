@@ -1,7 +1,7 @@
-const { DataTypes } = require("Sequelize");
-const sequelize = require("../config/db");
+const { DataTypes } = require("sequelize");
+const Sequelize = require("../config/db");
 
-const admin = sequelize.define("admin",{
+const admin = Sequelize.define("admin",{
     id:{
         type: DataTypes.INTEGER,
         primaryKey: true,

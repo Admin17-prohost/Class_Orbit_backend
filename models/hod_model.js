@@ -1,7 +1,7 @@
-const { DataTypes} = require("Sequelize");
-const sequelize = require("../config/db");
+const { DataTypes} = require("sequelize");
+const Sequelize = require("../config/db");
 
-const hod = sequelize.define("hod",{
+const hod = Sequelize.define("hod",{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

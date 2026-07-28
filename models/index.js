@@ -28,9 +28,13 @@ timetable.belongsTo(department, { foreignKey: "departmentID" });
 //subject - timetable
 subject.hasMany(timetable, { foreignKey: "subjectID" });
 timetable.belongsTo(subject, { foreignKey: "subjectID" });
+//subject - staff
+subject.belongsTo(staff, { foreignKey: "staffID" });
+staff.hasMany(subject, { foreignKey: "staffID" });
 //staff - timetable
 staff.hasMany(timetable, { foreignKey: "staffID" });
 timetable.belongsTo(staff, { foreignKey: "staffID" });
+
 
 module.exports = {
     sequelize,

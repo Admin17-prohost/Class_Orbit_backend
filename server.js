@@ -5,40 +5,42 @@ const app = express();
 
 app.use(express.json());
 
+//Database
 const sequelize = require("./config/db");
+
+//Import All models
+require("./models");
 
 // Routes
   const authRoutes = require("./routes/auth.routes");
   const deptRoutes = require("./routes/department.routes");
   const subjectRoutes = require("./routes/subject.routes");
-// Api
+
+// APIs
   app.use("/api/auth", authRoutes);
   app.use("/api/department", deptRoutes);
   app.use("/api/subject", subjectRoutes);
 
 // 🔥 Sync & authentication to Database
+const startServer = async() => {
+  try{
+    //Check DB Connection
+    await sequelize.authenticate();
+    console.log("Database Connected....✅");
 
-sequelize.authenticate()
-.then(()=> console.log("Database Connected...✅"))
-.catch(err => console.log("Database Connected faild...❌"));
+    // Sync all Models
+    await sequelize.sync();
+    console.log("Database Synced...✅");
 
-require("./models");
-
-  sequelize.sync() 
-    .then(() => {
-        console.log("✅ Database synced");
-
-        const PORT = process.env.PORT || 5000;
-
-        app.listen(PORT, () => { console.log(`🚀 Server Running on port ${PORT}`); 
-      
-      });
-        
-    })
-    .catch((err) => {
-        console.error("❌ Sync error:", err);
+    //Start Server
+    app.listen(process.env.PORT, () => {
+      console.log(`🚀 Server Running on port ${process.env.PORT}`);
     });
+  } catch(err){
+    console.error("❌ Database/Server Error: ", err);
+  }
+};
 
-    
+startServer();    
 
 module.exports = app;
