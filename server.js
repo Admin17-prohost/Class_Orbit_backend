@@ -15,11 +15,17 @@ require("./models");
   const authRoutes = require("./routes/auth.routes");
   const deptRoutes = require("./routes/department.routes");
   const subjectRoutes = require("./routes/subject.routes");
+  const staffRoutes = require("./routes/staff.routes");
+  const hodRoutes = require("./routes/hod.routes");
+  const officialRoutes = require("./routes/official.routes");
 
 // APIs
   app.use("/api/auth", authRoutes);
   app.use("/api/department", deptRoutes);
   app.use("/api/subject", subjectRoutes);
+  app.use("/api/staff", staffRoutes);
+  app.use("/api/hod", hodRoutes);
+  app.use("/api/official", officialRoutes);
 
 // 🔥 Sync & authentication to Database
 const startServer = async() => {
