@@ -8,13 +8,11 @@ const Timetable = sequelize.define("Timetable", {
         autoIncrement: true
     },
 
-    // Day Order
     day: {
         type: DataTypes.ENUM("A", "B", "C", "D", "E", "F"),
         allowNull: false
     },
 
-    // Period Number
     period: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -24,19 +22,16 @@ const Timetable = sequelize.define("Timetable", {
         }
     },
 
-    // Period Start Time
     startTime: {
         type: DataTypes.TIME,
         allowNull: true
     },
 
-    // Period End Time
     endTime: {
         type: DataTypes.TIME,
         allowNull: true
     },
 
-    // Class
     classID: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -46,7 +41,6 @@ const Timetable = sequelize.define("Timetable", {
         }
     },
 
-    // Subject
     subjectID: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -56,7 +50,6 @@ const Timetable = sequelize.define("Timetable", {
         }
     },
 
-    // Staff
     staffID: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -66,7 +59,6 @@ const Timetable = sequelize.define("Timetable", {
         }
     },
 
-    // Department
     departmentID: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -75,6 +67,20 @@ const Timetable = sequelize.define("Timetable", {
             key: "id"
         }
     }
+
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ["classID", "day", "period"],
+            name: "unique_class_day_period"
+        },
+        {
+            unique: true,
+            fields: ["staffID", "day", "period"],
+            name: "unique_staff_day_period"
+        }
+    ]
 });
 
 module.exports = Timetable;

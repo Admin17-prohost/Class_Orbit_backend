@@ -8,6 +8,7 @@ const student = require("./class_model");
 const department = require("./department_model");
 const subject = require("./subject_model");
 const timetable = require("./timetable_model");
+const Period = require("./period_model");
 
 // Relationships
 
@@ -57,4 +58,5 @@ module.exports = {
     department,
     subject,
     timetable,
+    Period
 };

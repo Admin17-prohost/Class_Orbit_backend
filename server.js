@@ -20,6 +20,8 @@ const hodRoutes = require("./routes/hod.routes");
 const officialRoutes = require("./routes/official.routes");
 const classRoutes = require("./routes/class.routes");
 const timebleRoutes = require("./routes/timetable.routes");
+const periodRoutes = require("./routes/period.routes");
+const dayOrderRoutes = require("./routes/dayOrder.routes");
 
 // APIs
 app.use("/api/auth", authRoutes);
@@ -27,9 +29,11 @@ app.use("/api/department", deptRoutes);
 app.use("/api/subject", subjectRoutes);
 app.use("/api/staff", staffRoutes);
 app.use("/api/hod", hodRoutes);
+app.use("/api/period", periodRoutes);
 app.use("/api/official", officialRoutes);
 app.use("/api/class", classRoutes);
 app.use("/api/timetable", timebleRoutes);
+app.use("/api/day-order", dayOrderRoutes);
 
 // 🔥 Sync & authentication to Database
 const startServer = async () => {
