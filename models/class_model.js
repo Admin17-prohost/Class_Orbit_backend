@@ -23,7 +23,7 @@ const classLogin = sequelize.define("classLogin",{
             type: DataTypes.INTEGER,
             allowNull: false
         },
-    departmentId: {
+    departmentID: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

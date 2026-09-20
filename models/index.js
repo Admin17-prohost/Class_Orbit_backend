@@ -10,31 +10,42 @@ const subject = require("./subject_model");
 const timetable = require("./timetable_model");
 
 // Relationships
+
 //department - HOD
 department.hasOne(hod, { foreignKey: "departmentID" });
 hod.belongsTo(department, { foreignKey: "departmentID" });
+
 //department - staff
 department.hasMany(staff, { foreignKey: "departmentID" });
 staff.belongsTo(department, { foreignKey: "departmentID" });
+
 //department - subject
 department.hasMany(subject, { foreignKey: "departmentID" });
 subject.belongsTo(department, { foreignKey: "departmentID" });
+
 //department - classLogin
 department.hasMany(student, { foreignKey: "departmentID" });
 student.belongsTo(department, { foreignKey: "departmentID" });
-//department - timetable
-department.hasMany(timetable, { foreignKey: "departmentID" });
-timetable.belongsTo(department, { foreignKey: "departmentID" });
-//subject - timetable
-subject.hasMany(timetable, { foreignKey: "subjectID" });
-timetable.belongsTo(subject, { foreignKey: "subjectID" });
+
 //subject - staff
 subject.belongsTo(staff, { foreignKey: "staffID" });
 staff.hasMany(subject, { foreignKey: "staffID" });
-//staff - timetable
+
+// Department - Timetable
+department.hasMany(timetable, { foreignKey: "departmentID" });
+timetable.belongsTo(department, { foreignKey: "departmentID" });
+
+// Class - Timetable
+student.hasMany(timetable, { foreignKey: "classID" });
+timetable.belongsTo(student, { foreignKey: "classID" });
+
+// Subject - Timetable
+subject.hasMany(timetable, { foreignKey: "subjectID" });
+timetable.belongsTo(subject, { foreignKey: "subjectID" });
+
+// Staff - Timetable
 staff.hasMany(timetable, { foreignKey: "staffID" });
 timetable.belongsTo(staff, { foreignKey: "staffID" });
-
 
 module.exports = {
     sequelize,
@@ -45,5 +56,5 @@ module.exports = {
     student,
     department,
     subject,
-    timetable
+    timetable,
 };

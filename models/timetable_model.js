@@ -1,45 +1,72 @@
 const { DataTypes } = require("sequelize");
-const Sequelize = require("../config/db");
+const sequelize = require("../config/db");
 
-const timetable = Sequelize.define("timetable",{
+const Timetable = sequelize.define("Timetable", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    period: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+
+    // Day Order
     day: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM("A", "B", "C", "D", "E", "F"),
         allowNull: false
     },
-     year: {
+
+    // Period Number
+    period: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            min: 1,
+            max: 5
+        }
     },
-     semester: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+
+    // Period Start Time
+    startTime: {
+        type: DataTypes.TIME,
+        allowNull: true
     },
-    staffID: {
+
+    // Period End Time
+    endTime: {
+        type: DataTypes.TIME,
+        allowNull: true
+    },
+
+    // Class
+    classID: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: "staffs",
+            model: "classLogins",
             key: "id"
         }
-    }
-    ,
+    },
+
+    // Subject
     subjectID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: "subjects",
             key: "id"
         }
     },
+
+    // Staff
+    staffID: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: "staffs",
+            key: "id"
+        }
+    },
+
+    // Department
     departmentID: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -50,4 +77,4 @@ const timetable = Sequelize.define("timetable",{
     }
 });
 
-module.exports = timetable;
+module.exports = Timetable;
